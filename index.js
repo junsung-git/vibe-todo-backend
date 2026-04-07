@@ -10,12 +10,16 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 const todoRouter = require('./routers/todoRouter');
+const peopleRouter = require('./routers/peopleRouter');
+const memoRouter = require('./routers/memoRouter');
 
 app.get('/', (req, res) => {
   res.json({ message: 'todo-backend 서버 실행 중 ✅' });
 });
 
 app.use('/todos', todoRouter);
+app.use('/people', peopleRouter);
+app.use('/memos', memoRouter);
 
 // MongoDB 연결 후 서버 시작
 mongoose

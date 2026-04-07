@@ -19,6 +19,10 @@ const todoSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    person: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,

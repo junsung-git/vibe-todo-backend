@@ -4,7 +4,9 @@ const Todo = require('../models/Todo');
 
 router.get('/', async (req, res) => {
   try {
-    const filter = req.query.dateKey ? { dateKey: req.query.dateKey } : {};
+    let filter = {};
+    if (req.query.dateKey) filter.dateKey = req.query.dateKey;
+    else if (req.query.month) filter.dateKey = { $regex: `^${req.query.month}` };
     const todos = await Todo.find(filter);
     res.json(todos);
   } catch (e) {
@@ -15,8 +17,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const { dateKey, text, _insertOrder } = req.body;
-    const todo = await Todo.create({ dateKey, text, _insertOrder });
+    const { dateKey, text, _insertOrder, person } = req.body;
+    const todo = await Todo.create({ dateKey, text, _insertOrder, person });
     res.status(201).json(todo);
   } catch (e) {
     console.error('POST /todos 에러:', e.message);
@@ -26,10 +28,11 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const { text, done } = req.body;
+    const { text, done, person } = req.body;
     const update = {};
     if (text !== undefined) update.text = text;
     if (done !== undefined) update.done = done;
+    if (person !== undefined) update.person = person;
     const todo = await Todo.findByIdAndUpdate(req.params.id, update, { new: true });
     res.json(todo);
   } catch (e) {

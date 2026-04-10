@@ -7,6 +7,7 @@ const todoSchema = new mongoose.Schema(
     done: { type: Boolean, default: false },
     assignee: { type: String, default: '' },
     color: { type: String, default: '' },
+    equipment: { type: [String], default: [] },
     _insertOrder: { type: Number, default: 0 },
   },
   { timestamps: true }

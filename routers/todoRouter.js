@@ -15,8 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const { dateKey, text, _insertOrder, assignee, color } = req.body;
-    const todo = await Todo.create({ dateKey, text, _insertOrder, assignee: assignee || '', color: color || '' });
+    const { dateKey, text, _insertOrder, assignee, color, equipment } = req.body;
+    const todo = await Todo.create({ dateKey, text, _insertOrder, assignee: assignee || '', color: color || '', equipment: equipment || [] });
     res.status(201).json(todo);
   } catch (e) {
     console.error('POST /todos 에러:', e.message);
@@ -26,12 +26,13 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const { text, done, assignee, color } = req.body;
+    const { text, done, assignee, color, equipment } = req.body;
     const update = {};
     if (text !== undefined) update.text = text;
     if (done !== undefined) update.done = done;
     if (assignee !== undefined) update.assignee = assignee;
     if (color !== undefined) update.color = color;
+    if (equipment !== undefined) update.equipment = equipment;
     const todo = await Todo.findByIdAndUpdate(req.params.id, update, { new: true });
     res.json(todo);
   } catch (e) {
